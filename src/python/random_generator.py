@@ -132,7 +132,10 @@ def demonstrate_generator(count: int = 20) -> None:
     # 숫자 생성 및 출력
     generated_numbers = []
 
-    # 재귀 함수를 사용해서 반복문 없이 구현
+    # 안전한 재귀 함수 (재귀 한계 확인 포함)
+    import sys
+    max_safe_recursion = min(count, sys.getrecursionlimit() - 100)
+    
     def generate_recursive(remaining: int) -> None:
         if remaining <= 0:
             return
@@ -145,10 +148,22 @@ def demonstrate_generator(count: int = 20) -> None:
         )
         print(f"Generated: {number} (Previous: {prev_display})")
 
-        # 재귀 호출로 반복문 대체
+        # 안전한 재귀 호출
         generate_recursive(remaining - 1)
 
-    generate_recursive(count)
+    # 재귀가 안전하면 재귀 사용, 아니면 반복문 사용
+    if count <= max_safe_recursion:
+        generate_recursive(count)
+    else:
+        print(f"Note: Using iterative approach for safety (count > {max_safe_recursion})")
+        for i in range(count):
+            number = generator.generate_number()
+            generated_numbers.append(number)
+            
+            prev_display = (
+                generator.previous_number if len(generated_numbers) > 1 else "none"
+            )
+            print(f"Generated: {number} (Previous: {prev_display})")
 
     # 통계 출력
     stats = generator.get_statistics()
@@ -182,14 +197,9 @@ class PerformanceBenchmark:
 
         start_time = time.perf_counter()
 
-        # 재귀로 벤치마크 실행
-        def benchmark_recursive(remaining: int) -> None:
-            if remaining <= 0:
-                return
+        # 반복적 방식으로 벤치마크 실행 (재귀 깊이 문제 해결)
+        for _ in range(iterations):
             generator.generate_number()
-            benchmark_recursive(remaining - 1)
-
-        benchmark_recursive(iterations)
 
         end_time = time.perf_counter()
 

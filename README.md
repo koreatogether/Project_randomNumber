@@ -118,3 +118,33 @@ logs/
 - 메모리 사용량 분석
 - 랜덤 숫자 생성 품질 검증
 - 조건 만족도 측정 (이전 숫자와 다른 숫자 생성)
+
+## 🔧 트러블슈팅
+
+개발 중 문제가 발생했을 때는 다음 문서들을 참고하세요:
+
+### 📋 트러블슈팅 가이드
+- **[TROUBLESHOOTING.md](./TROUBLESHOOTING.md)** - 전체 프로젝트 트러블슈팅 가이드
+- **[Git 문제 해결](./docs/GIT_TROUBLESHOOTING.md)** - Git 관련 상세 가이드
+
+### 🚨 자주 발생하는 문제들
+
+#### VSCode Git Push 버튼 비활성화
+```bash
+git branch --set-upstream-to=origin/main main
+git pull --rebase origin main
+git push origin main
+```
+
+#### 코드 품질 도구 실행 오류
+```bash
+set PYTHONIOENCODING=utf-8
+python tools/code_quality_checker.py
+```
+
+#### 개발 환경 설정 문제
+```bash
+python tools/setup_dev_environment.py
+```
+
+자세한 해결 방법은 **[TROUBLESHOOTING.md](./TROUBLESHOOTING.md)**를 참고하세요.
