@@ -39,6 +39,12 @@ venv.bak/
 *.swo
 *~
 docs/*.md
+!docs/01_readme.md
+!docs/02_USER_GUIDE.md
+!docs/03_API_REFERENCE.md
+!docs/04_PERFORMANCE_ANALYSIS.md
+!docs/05_STATISTICAL_ANALYSIS.md
+!docs/06_TROUBLESHOOTING.md
 docs/api/
 docs/architecture/
 benchmarks/

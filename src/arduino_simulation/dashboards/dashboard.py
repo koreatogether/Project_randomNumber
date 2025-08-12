@@ -23,9 +23,9 @@ from typing import Dict, List, Any, Optional
 import os
 from pathlib import Path
 
-from arduino_mock import ArduinoUnoR4WiFiMock
+from temp.arduino_mock import ArduinoUnoR4WiFiMock
 from random_generator_sim import RandomNumberGeneratorSim, create_simulation
-from simulation_runner import SimulationRunner, SimulationConfig
+from tests.simulation_runner import SimulationRunner, SimulationConfig
 
 
 class ArduinoSimulationDashboard:

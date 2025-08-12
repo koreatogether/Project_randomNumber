@@ -13,6 +13,8 @@ pyserial>=3.5
 # Arduino Simulation specific
 scipy>=1.11.0
 scikit-learn>=1.3.0
+pyyaml>=6.0
+seaborn>=0.12.0
 
 # Development tools
 ruff>=0.1.0

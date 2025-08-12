@@ -25,7 +25,7 @@ from typing import Dict, List, Any, Optional
 from dataclasses import asdict
 
 # 경로 추가
-sys.path.append('src/arduino_simulation')
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 
 from multi_implementation_sim import MultiImplementationSimulator, run_multi_implementation_test
 
