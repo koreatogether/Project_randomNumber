@@ -89,7 +89,7 @@ class AutoRealArduinoDashboard:
                 html.Div(
                     [
                         html.H1(
-                            "🔥 Real Arduino Implementation Dashboard",
+                            "Real Arduino Implementation Dashboard",
                             className="text-center mb-4",
                             style={
                                 "color": "#e74c3c",
@@ -357,14 +357,23 @@ class AutoRealArduinoDashboard:
                 }
             )
 
-            fig = px.bar(
-                df,
-                x="Implementation",
-                y="Distribution Quality",
-                title="Distribution Quality (Higher = Better)",
-                color="Distribution Quality",
-                color_continuous_scale="Greens",
-            )
+            try:
+                fig = px.bar(
+                    df,
+                    x="Implementation",
+                    y="Distribution Quality",
+                    title="Distribution Quality (Higher = Better)",
+                    color="Distribution Quality",
+                    color_continuous_scale="viridis",  # 안전한 색상 스케일로 변경
+                )
+            except Exception as e:
+                # 색상 스케일 없이 기본 차트 생성
+                fig = px.bar(
+                    df,
+                    x="Implementation",
+                    y="Distribution Quality",
+                    title="Distribution Quality (Higher = Better)",
+                )
 
             fig.update_xaxes(tickangle=45)
             fig.update_layout(height=400, showlegend=False)
@@ -647,21 +656,21 @@ class AutoRealArduinoDashboard:
 
     def run_server(self):
         """서버 실행"""
-        print("🔥 Starting Auto Real Arduino Dashboard")
-        print(f"📱 URL: http://localhost:{self.port}")
-        print("⏰ 10초 카운트다운 후 자동 시작")
-        print("🛑 Press Ctrl+C to stop")
+        print("Starting Auto Real Arduino Dashboard")
+        print(f"URL: http://localhost:{self.port}")
+        print("10초 카운트다운 후 자동 시작")
+        print("Press Ctrl+C to stop")
 
         try:
             self.app.run(debug=self.debug, port=self.port, host="0.0.0.0")
         except KeyboardInterrupt:
-            print("\n🛑 Dashboard stopped by user")
+            print("\nDashboard stopped by user")
         except Exception as e:
-            print(f"❌ Server error: {e}")
+            print(f"Server error: {e}")
 
 
 if __name__ == "__main__":
-    print("🔥 Auto Real Arduino Implementation Dashboard")
+    print("Auto Real Arduino Implementation Dashboard")
     print("=" * 60)
 
     try:

@@ -367,14 +367,23 @@ class MultiImplementationDashboard:
                 }
             )
 
-            fig = px.bar(
-                df,
-                x="Implementation",
-                y="Memory (bytes)",
-                title="Memory Usage Comparison",
-                color="Memory (bytes)",
-                color_continuous_scale="reds",
-            )
+            try:
+                fig = px.bar(
+                    df,
+                    x="Implementation",
+                    y="Memory (bytes)",
+                    title="Memory Usage Comparison",
+                    color="Memory (bytes)",
+                    color_continuous_scale="plasma",  # 안전한 색상 스케일로 변경
+                )
+            except Exception as e:
+                # 색상 스케일 없이 기본 차트 생성
+                fig = px.bar(
+                    df,
+                    x="Implementation",
+                    y="Memory (bytes)",
+                    title="Memory Usage Comparison",
+                )
 
             fig.update_xaxes(tickangle=45)
             return fig
@@ -412,14 +421,23 @@ class MultiImplementationDashboard:
                 }
             )
 
-            fig = px.bar(
-                df,
-                x="Implementation",
-                y="Distribution Quality",
-                title="Distribution Quality (Higher is Better)",
-                color="Distribution Quality",
-                color_continuous_scale="greens",
-            )
+            try:
+                fig = px.bar(
+                    df,
+                    x="Implementation",
+                    y="Distribution Quality",
+                    title="Distribution Quality (Higher is Better)",
+                    color="Distribution Quality",
+                    color_continuous_scale="viridis",  # 안전한 색상 스케일로 변경
+                )
+            except Exception as e:
+                # 색상 스케일 없이 기본 차트 생성
+                fig = px.bar(
+                    df,
+                    x="Implementation",
+                    y="Distribution Quality",
+                    title="Distribution Quality (Higher is Better)",
+                )
 
             fig.update_xaxes(tickangle=45)
             return fig

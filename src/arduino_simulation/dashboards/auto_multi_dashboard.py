@@ -290,14 +290,23 @@ class AutoMultiDashboard:
                     }
                 )
 
-                fig = px.bar(
-                    df,
-                    x="Implementation",
-                    y="Memory",
-                    title="Memory Usage (bytes)",
-                    color="Memory",
-                    color_continuous_scale="reds",
-                )
+                try:
+                    fig = px.bar(
+                        df,
+                        x="Implementation",
+                        y="Memory",
+                        title="Memory Usage (bytes)",
+                        color="Memory",
+                        color_continuous_scale="plasma",  # 안전한 색상 스케일로 변경
+                    )
+                except Exception as e:
+                    # 색상 스케일 없이 기본 차트 생성
+                    fig = px.bar(
+                        df,
+                        x="Implementation",
+                        y="Memory",
+                        title="Memory Usage (bytes)",
+                    )
 
                 fig.update_xaxes(tickangle=45)
                 fig.update_layout(height=400)

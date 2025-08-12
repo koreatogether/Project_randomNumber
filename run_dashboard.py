@@ -13,7 +13,7 @@ sys.path.insert(0, os.path.join(project_root, 'src', 'arduino_simulation'))
 
 def main():
     """메인 실행 함수"""
-    print("🚀 Arduino Multi-Implementation Dashboard Launcher")
+    print("Arduino Multi-Implementation Dashboard Launcher")
     print("=" * 60)
     
     print("\n사용 가능한 대시보드:")
@@ -25,9 +25,9 @@ def main():
     
     try:
         if choice == "1":
-            print("\n🔥 자동 실제 Arduino 대시보드 시작...")
-            print("📱 URL: http://localhost:8053")
-            print("⏰ 10초 카운트다운 후 자동 시작")
+            print("\n자동 실제 Arduino 대시보드 시작...")
+            print("URL: http://localhost:8053")
+            print("10초 카운트다운 후 자동 시작")
             
             # 시뮬레이션 모듈 경로 추가
             sys.path.insert(0, os.path.join(project_root, 'src', 'arduino_simulation'))
@@ -37,8 +37,8 @@ def main():
             dashboard.run_server()
             
         elif choice == "2":
-            print("\n🌐 기본 다중 구현 대시보드 시작...")
-            print("📱 URL: http://localhost:8052")
+            print("\n기본 다중 구현 대시보드 시작...")
+            print("URL: http://localhost:8052")
             
             # 시뮬레이션 모듈 경로 추가
             sys.path.insert(0, os.path.join(project_root, 'src', 'arduino_simulation'))
@@ -48,7 +48,7 @@ def main():
             dashboard.run_server()
             
         elif choice == "3":
-            print("\n📊 통계 분석 실행...")
+            print("\n통계 분석 실행...")
             
             # 시뮬레이션 모듈 경로 추가
             sys.path.insert(0, os.path.join(project_root, 'src', 'arduino_simulation'))
@@ -57,12 +57,12 @@ def main():
             analysis_main()
             
         else:
-            print("❌ 잘못된 선택입니다.")
+            print("잘못된 선택입니다.")
             
     except KeyboardInterrupt:
-        print("\n🛑 사용자에 의해 중단되었습니다.")
+        print("\n사용자에 의해 중단되었습니다.")
     except Exception as e:
-        print(f"❌ 오류 발생: {e}")
+        print(f"오류 발생: {e}")
         print("\n문제 해결:")
         print("1. 의존성 설치: pip install -r requirements.txt")
         print("2. 설정 파일 확인: config/arduino_implementations_real.yaml")
