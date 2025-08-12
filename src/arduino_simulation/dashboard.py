@@ -23,9 +23,9 @@ from typing import Dict, List, Any, Optional
 import os
 from pathlib import Path
 
-from .arduino_mock import ArduinoUnoR4WiFiMock
-from .random_generator_sim import RandomNumberGeneratorSim, create_simulation
-from .simulation_runner import SimulationRunner, SimulationConfig
+from arduino_mock import ArduinoUnoR4WiFiMock
+from random_generator_sim import RandomNumberGeneratorSim, create_simulation
+from simulation_runner import SimulationRunner, SimulationConfig
 
 
 class ArduinoSimulationDashboard:
@@ -249,9 +249,11 @@ class ArduinoSimulationDashboard:
             
             fig.update_traces(texttemplate='%{text:.1f}%', textposition='outside')
             fig.update_layout(showlegend=False)
-            fig.add_hline(y=dist_data['counts'][0] * (100/33.33) / 100, 
-                         line_dash="dash", line_color="red",
-                         annotation_text="Expected (33.33%)")
+            first_key = next(iter(dist_data['counts'].keys()), None)
+            if first_key is not None:
+                fig.add_hline(y=dist_data['counts'][first_key] * (100/33.33) / 100, 
+                             line_dash="dash", line_color="red",
+                             annotation_text="Expected (33.33%)")
             
             return fig
         
@@ -276,7 +278,7 @@ class ArduinoSimulationDashboard:
                          markers=True)
             
             fig.update_traces(line=dict(width=2), marker=dict(size=4))
-            fig.update_yaxis(tickmode='array', tickvals=[0, 1, 2])
+            fig.update_yaxes(tickmode='array', tickvals=[0, 1, 2])
             
             return fig
         
@@ -428,7 +430,7 @@ class ArduinoSimulationDashboard:
     def run_server(self):
         """대시보드 서버 실행"""
         print(f"Starting dashboard server on http://localhost:{self.port}")
-        self.app.run_server(debug=self.debug, port=self.port, host='0.0.0.0')
+        self.app.run(debug=self.debug, port=self.port, host='0.0.0.0')
 
 
 # ==================== 편의 함수들 ====================

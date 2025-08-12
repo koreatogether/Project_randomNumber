@@ -17,9 +17,11 @@ from dataclasses import dataclass, asdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import threading
 from pathlib import Path
+import pandas as pd
+import plotly.express as px
 
-from .arduino_mock import ArduinoUnoR4WiFiMock, create_arduino_mock
-from .random_generator_sim import RandomNumberGeneratorSim, create_simulation
+from arduino_mock import ArduinoUnoR4WiFiMock, create_arduino_mock
+from random_generator_sim import RandomNumberGeneratorSim, create_simulation
 
 
 @dataclass
@@ -49,7 +51,7 @@ class SimulationProgress:
 class SimulationRunner:
     """Arduino 시뮬레이션 실행 엔진"""
     
-    def __init__(self, config: SimulationConfig = None):
+    def __init__(self, config: 'Optional[SimulationConfig]' = None):
         self.config = config or SimulationConfig()
         self.progress = SimulationProgress()
         self.is_running = False
@@ -62,7 +64,7 @@ class SimulationRunner:
         print(f"Simulation Runner initialized")
         print(f"Config: {self.config.iterations:,} iterations, seed={self.config.seed}")
     
-    def run_single_simulation(self, config: SimulationConfig = None) -> Dict[str, Any]:
+    def run_single_simulation(self, config: 'Optional[SimulationConfig]' = None) -> Dict[str, Any]:
         """단일 시뮬레이션 실행"""
         if config is None:
             config = self.config
@@ -112,7 +114,7 @@ class SimulationRunner:
     
     def run_multiple_simulations(self, 
                                 seeds: List[int], 
-                                config: SimulationConfig = None) -> List[Dict[str, Any]]:
+                                config: 'Optional[SimulationConfig]' = None) -> List[Dict[str, Any]]:
         """여러 시드로 다중 시뮬레이션 실행"""
         if config is None:
             config = self.config
@@ -154,7 +156,7 @@ class SimulationRunner:
     
     def run_parallel_simulation(self, 
                                seeds: List[int], 
-                               config: SimulationConfig = None) -> List[Dict[str, Any]]:
+                               config: 'Optional[SimulationConfig]' = None) -> List[Dict[str, Any]]:
         """병렬 시뮬레이션 실행 (실험적 기능)"""
         if config is None:
             config = self.config
@@ -283,7 +285,7 @@ class SimulationRunner:
     def _calculate_distribution_variance(self, results_list: List[Dict[str, Any]]) -> Dict[str, float]:
         """분포의 분산 계산 (시드별 일관성 측정)"""
         if len(results_list) < 2:
-            return {0: 0.0, 1: 0.0, 2: 0.0}
+            return {"0": 0.0, "1": 0.0, "2": 0.0}
         
         variance = {}
         for num in [0, 1, 2]:
@@ -329,7 +331,7 @@ class SimulationRunner:
 
 # ==================== 편의 함수들 ====================
 
-def run_quick_simulation(iterations: int = 1000, seed: int = None) -> Dict[str, Any]:
+def run_quick_simulation(iterations: int = 1000, seed: 'Optional[int]' = None) -> Dict[str, Any]:
     """빠른 시뮬레이션 실행"""
     config = SimulationConfig(
         iterations=iterations,
@@ -382,7 +384,7 @@ def run_benchmark_simulation(iterations: int = 10000) -> Dict[str, Any]:
     print(f"Total generations: {len(test_seeds) * iterations:,}")
     print(f"Overall rate: {(len(test_seeds) * iterations) / (end_time - start_time):,.0f} gen/sec")
     
-    return results
+    return results if isinstance(results, dict) else {}
 
 
 # ==================== 테스트 코드 ====================
@@ -408,3 +410,19 @@ if __name__ == "__main__":
         print("\n3. Full Benchmark Test")
         benchmark_results = run_benchmark_simulation(iterations=10000)
         print("Benchmark completed!")
+
+def update_distribution_chart(data):
+    if not data or 'distribution_analysis' not in data:
+        return px.bar(title="No data available")
+    dist_data = data['distribution_analysis']
+    if not dist_data or 'counts' not in dist_data or 'percentages' not in dist_data:
+        return px.bar(title="No data available")
+    df = pd.DataFrame({
+        'Number': list(dist_data['counts'].keys()),
+        'Count': list(dist_data['counts'].values()),
+        'Percentage': list(dist_data['percentages'].values())
+    })
+    fig = px.bar(df, x='Number', y='Count', title="Number Distribution", text='Percentage', color='Number')
+    fig.update_traces(texttemplate='%{text:.1f}%', textposition='outside')
+    fig.update_layout(showlegend=False)
+    return fig

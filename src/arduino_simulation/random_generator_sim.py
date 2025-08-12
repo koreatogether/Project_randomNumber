@@ -12,7 +12,7 @@ from typing import List, Dict, Any, Optional, Tuple
 from dataclasses import dataclass
 import time
 import json
-from .arduino_mock import ArduinoUnoR4WiFiMock
+from arduino_mock import ArduinoUnoR4WiFiMock
 
 
 @dataclass
